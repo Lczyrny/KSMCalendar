@@ -1,5 +1,7 @@
 package pl.krakowskascenamuzyczna.ksmcalendar;
 
+import android.nfc.Tag;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,14 +22,14 @@ public class Concert {
     private String excerpt;
     private String date;
     private String modified;
-    private List<Category> categories = new ArrayList<Category>();
+    //private List<Category> categories = new ArrayList<Category>();
     private List<Tag> tags = new ArrayList<Tag>();
-    private Author author;
+    //private Author author;
     private List<Object> comments = new ArrayList<Object>();
-    private List<Attachment> attachments = new ArrayList<Attachment>();
+   // private List<Attachment> attachments = new ArrayList<Attachment>();
     private int commentCount;
     private String commentStatus;
-    private CustomFields customFields;
+   // private CustomFields customFields;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
