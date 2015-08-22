@@ -1,5 +1,6 @@
 package pl.krakowskascenamuzyczna.ksmcalendar;
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +16,13 @@ import java.util.List;
 public class ConcertAdapter extends RecyclerView.Adapter<ConcertAdapter, ConcertAdapter.MyViewHolder> {
 
     private LayoutInflater inflater;
+    private Context context;
 
     List<Concert> data = Collections.emptyList();
-    public ConcertAdapter(Context context) {
+    public ConcertAdapter(Context context, List<Concert> concertList ) {
        inflater = LayoutInflater.from(context);
+       this.data = concertList;
+        this.context = context;
 
     }
 
@@ -35,7 +39,7 @@ public class ConcertAdapter extends RecyclerView.Adapter<ConcertAdapter, Concert
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
         Concert current = data.get(position);
-        holder.concert.setImageResource(current.);
+        holder.concert.setImageURI(Uri.parse(current.getCategories().get(0).getAttachement().getImages().getThumbnail().getUrl()));
 
     }
 

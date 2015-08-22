@@ -17,14 +17,18 @@ public class ApiClient {
 
     public static KsmInterface getKsmApiClient() {
         if(ksmInterface == null) {
-            RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint("http://krakowskascenamuzyczna.pl/api").build();
+            RestAdapter restAdapter = new RestAdapter.Builder()
+
+                    .setEndpoint("http://krakowskascenamuzyczna.pl/api").build();
+
             ksmInterface = restAdapter.create(KsmInterface.class);
         }
         return ksmInterface;
     }
 
+
     public interface KsmInterface() {
-        @GET("/future")
+        @GET("/koncety/future")
                 void getFuture(@Query("Typ")String "type", @Query("Link")String "url",
                 @Query("Tytuł")String "title",@Query("Opis")String "content",@Query("Data")String "date"),
         Callback<List<Concert>> callback);

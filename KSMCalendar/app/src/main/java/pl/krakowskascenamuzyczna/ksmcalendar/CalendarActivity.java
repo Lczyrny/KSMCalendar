@@ -8,17 +8,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.List;
 
 
 public class CalendarActivity extends Activity {
 
 
+    private List<Concert> concerts;
+    private RecyclerView recyclerView;
+    private ConcertAdapter recyclerViewAdapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+
+        recyclerView = new ConcertAdapter(CalendarActivity.this, )
 
 
     }

@@ -29,8 +29,7 @@ public class Concert {
    // private List<Attachment> attachments = new ArrayList<Attachment>();
     private int commentCount;
     private String commentStatus;
-   // private CustomFields customFields;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Category category;
 
     /**
      *
