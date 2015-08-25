@@ -42,7 +42,7 @@ public class CalendarActivity extends Activity {
         ApiClient.getKsmApiClient().getFuture(new Callback<List<Concert>>() {
             @Override
             public void success(List<Concert> concerts, Response response) {
-                setConcerts(List<Concert>concerts);
+                setConcerts(concerts);
             }
 
             @Override
@@ -54,7 +54,6 @@ public class CalendarActivity extends Activity {
 
     public void setConcerts(List<Concert> concerts) {
         ConcertAdapter = new recyclerViewAdapter(CalendarActivity.this(), concerts);
-        recyclerView = new RecyclerView(CalendarActivity.this());
         recyclerView.setAdapter(ConcertAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(CalendarActivity.this()));
     }
