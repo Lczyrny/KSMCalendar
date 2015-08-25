@@ -1,14 +1,24 @@
-package pl.krakowskascenamuzyczna.ksmcalendar;
+package pl.krakowskascenamuzyczna.ksmcalendar.Activities;
 
 
 import android.app.Activity;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.List;
+
+import pl.krakowskascenamuzyczna.ksmcalendar.ApiClient;
+import pl.krakowskascenamuzyczna.ksmcalendar.ConcertAdapter;
+import pl.krakowskascenamuzyczna.ksmcalendar.R;
+import pl.krakowskascenamuzyczna.ksmcalendar.data.Concert;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 public class CalendarActivity extends Activity {
@@ -27,6 +37,26 @@ public class CalendarActivity extends Activity {
         recyclerView = new ConcertAdapter(CalendarActivity.this, )
 
 
+    }
+    public void futureConcerts() {
+        ApiClient.getKsmApiClient().getFuture(new Callback<List<Concert>>() {
+            @Override
+            public void success(List<Concert> concerts, Response response) {
+                setConcerts(List<Concert>concerts);
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void setConcerts(List<Concert> concerts) {
+        ConcertAdapter = new recyclerViewAdapter(CalendarActivity.this(), concerts);
+        recyclerView = new RecyclerView(CalendarActivity.this());
+        recyclerView.setAdapter(ConcertAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(CalendarActivity.this()));
     }
 
     @Override

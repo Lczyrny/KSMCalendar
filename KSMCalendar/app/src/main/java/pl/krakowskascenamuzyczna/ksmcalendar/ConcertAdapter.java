@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import java.util.Collections;
 import java.util.List;
 
+import pl.krakowskascenamuzyczna.ksmcalendar.data.Concert;
+
 /**
  * Created by Bartos on 2015-08-19.
  */

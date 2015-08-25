@@ -1,4 +1,6 @@
-package pl.krakowskascenamuzyczna.ksmcalendar;
+package pl.krakowskascenamuzyczna.ksmcalendar.data;
+
+import pl.krakowskascenamuzyczna.ksmcalendar.data.Image;
 
 /**
  * Created by Bartos on 2015-08-21.

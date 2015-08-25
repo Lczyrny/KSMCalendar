@@ -1,10 +1,12 @@
-package pl.krakowskascenamuzyczna.ksmcalendar;
+package pl.krakowskascenamuzyczna.ksmcalendar.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.View;
+
+import pl.krakowskascenamuzyczna.ksmcalendar.R;
 
 
 public class EnterActivity extends Activity {
