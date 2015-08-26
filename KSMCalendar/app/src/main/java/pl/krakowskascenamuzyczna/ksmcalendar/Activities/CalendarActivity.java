@@ -48,6 +48,7 @@ public class CalendarActivity extends Activity {
             @Override
             public void failure(RetrofitError retrofitError) {
                 Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT).show();
+                setConcerts(null);
             }
         });
     }
