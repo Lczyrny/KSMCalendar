@@ -27,7 +27,6 @@ public class ApiClient {
     public static KsmInterface getKsmApiClient() {
         if(ksmInterface == null) {
             RestAdapter restAdapter = new RestAdapter.Builder()
-                    .setConverter(getConverter())
                     .setRequestInterceptor(requestInterceptor)
                     .setEndpoint("http://krakowskascenamuzyczna.pl/api")
                     .build();
@@ -36,14 +35,7 @@ public class ApiClient {
         }
         return ksmInterface;
     }
-    private static Converter getConverter() {
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Thumbnail.class, new ThumbnailDeserializer());
-        Gson gson = builder.create();
 
-        GsonConverter converter = new GsonConverter(gson);
-        return converter;
-    }
 
 
     public interface KsmInterface {
