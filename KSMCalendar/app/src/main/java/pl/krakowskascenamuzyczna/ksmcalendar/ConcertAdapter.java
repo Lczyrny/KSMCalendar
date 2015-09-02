@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.android.volley.toolbox.NetworkImageView;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -17,44 +19,52 @@ import pl.krakowskascenamuzyczna.ksmcalendar.data.Concert;
  */
 public class ConcertAdapter extends RecyclerView.Adapter<ConcertAdapter, ConcertAdapter.MyViewHolder> {
 
+
+
     private LayoutInflater inflater;
     private Context context;
 
     List<Concert> data = Collections.emptyList();
-    public ConcertAdapter(Context context, List<Concert> concertList ) {
-       inflater = LayoutInflater.from(context);
-       this.data = concertList;
+
+    public ConcertAdapter(Context context, List<Concert> concertList) {
+        inflater = LayoutInflater.from(context);
+        this.data = concertList;
         this.context = context;
-
     }
 
-    @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = inflater.inflate(R.layout.concert, parent,false);
-        MyViewHolder holder = new MyViewHolder(view);
+        @Override
+        public  MyViewHolder onCreateViewHolder (ViewGroup parent,int viewType){
 
-        return holder;
-    }
+            View view = inflater.inflate(R.layout.concert_item, parent, false);
+            MyViewHolder holder = new MyViewHolder(view);
 
-    @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+            return holder;
+        }
+
+        @Override
+        public void onBindViewHolder (MyViewHolder holder,int position){
 
         Concert current = data.get(position);
         holder.concert.setImageURI(Uri.parse(current.getCategories().get(0).getAttachement().getImages().getThumbnail().getUrl()));
 
     }
 
-    @Override
-    public int getItemCount() {
-        return 0;
-    }
-    class MyViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView concert;
-        public MyViewHolder(View itemView) {
-            super(itemView);
-            concert = (ImageView) itemView.findViewById(R.id.concert_iv);
+
+        @Override
+        public int getItemCount () {
+            return 0;
         }
+        class MyViewHolder extends RecyclerView.ViewHolder {
+
+            private NetworkImageView concert;
+
+            public MyViewHolder(View itemView) {
+                super(itemView);
+                concert = (NetworkImageView) itemView.findViewById(R.id.concerts_niv);
+            }
+        }
+
     }
-}
+
