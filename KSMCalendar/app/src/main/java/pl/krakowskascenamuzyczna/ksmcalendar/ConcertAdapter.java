@@ -13,11 +13,12 @@ import java.util.Collections;
 import java.util.List;
 
 import pl.krakowskascenamuzyczna.ksmcalendar.data.Concert;
+import pl.krakowskascenamuzyczna.ksmcalendar.data.Thumbnail;
 
 /**
  * Created by Bartos on 2015-08-19.
  */
-public class ConcertAdapter extends RecyclerView.Adapter<ConcertAdapter, ConcertAdapter.MyViewHolder> {
+public class ConcertAdapter extends RecyclerView.Adapter<ConcertAdapter.MyViewHolder> {
 
 
 
@@ -46,7 +47,7 @@ public class ConcertAdapter extends RecyclerView.Adapter<ConcertAdapter, Concert
         public void onBindViewHolder (MyViewHolder holder,int position){
 
         Concert current = data.get(position);
-        holder.concert.setImageURI(Uri.parse(current.getCategories().get(0).getAttachement().getImages().getThumbnail().getUrl()));
+        holder.concert.setImageURI(Uri.parse(current.getUrl()));
 
     }
 

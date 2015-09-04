@@ -4,10 +4,14 @@ package pl.krakowskascenamuzyczna.ksmcalendar.Activities;
 import android.app.Activity;
 
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +25,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.List;
+import java.util.zip.Inflater;
 
 import pl.krakowskascenamuzyczna.ksmcalendar.ApiClient;
 import pl.krakowskascenamuzyczna.ksmcalendar.ConcertAdapter;
@@ -34,11 +39,11 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class CalendarActivity extends ListActivity implements AdapterView.OnItemClickListener {
+public class CalendarActivity extends Activity implements AdapterView.OnItemClickListener {
 
-    private List<Concert> concerts;
+    private List<Thumbnail> concerts;
     private RecyclerView recyclerView;
-    private ConcertAdapter recyclerViewAdapter;
+    private ConcertAdapter adapter;
 
 
 
@@ -52,50 +57,33 @@ public class CalendarActivity extends ListActivity implements AdapterView.OnItem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
         mImageLoader = MySingleton.getInstance(this).getImageLoader();
-        ConcertAdapter = new recyclerViewAdapter(this, android.R.layout.simple_list_item_1) {
-
-          public View getView(int position, View convertView, ViewGroup parent) {
-
-              View itemView = convertView;
-              if (itemView == null) {
-                  itemView = getLayoutInflater().inflate(R.layout.concert_item, parent, false);
-              }
-            mNetworkImageView = (NetworkImageView) itemView.findViewById(R.id.concerts_rv);
-              mNetworkImageView.setDefaultImageResId(R.drawable.no_image);
-              mNetworkImageView.setErrorImageResId(R.drawable.error);
-              mNetworkImageView.setAdjustViewBounds(true);
-              mNetworkImageView.setImageUrl(, mImageLoader);
-              return itemView;
+        recyclerView.setAdapter(adapter);
 
 
           }
-        };
-        setListAdapter(ConcertAdapter);
-        ListView listView = getListView();
-        listView.setOnClickListener((View.OnClickListener) this);
-
-}
 
         public void futureConcerts() {
-        ApiClient.getKsmApiClient().getFuture(new Callback<List<Concert>>(){
-@Override
-        public void success(List<Concert>concerts,Response response){
-        setConcerts(concerts);
-        }
+        ApiClient.getKsmApiClient().getFuture("type","url","title","content","date", new Callback<List<Concert>>() {
+            @Override
+            public void success(List<Concert> concerts, Response response) {
+                setConcerts(concerts);
+            }
 
 
             @Override
             public void failure(RetrofitError retrofitError) {
-                Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                 setConcerts(null);
             }
         });
     }
 
     public void setConcerts(List<Concert> concerts) {
-        ConcertAdapter = new recyclerViewAdapter(CalendarActivity.this(), concerts);
-       recyclerView.setAdapter(ConcertAdapter);
-       recyclerView.setLayoutManager(new LinearLayoutManager(CalendarActivity.this()));
+       adapter = new ConcertAdapter(this, concerts);
+       recyclerView.setAdapter(adapter);
+       recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter.notifyDataSetChanged();
+
 
     }
 

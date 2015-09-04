@@ -1,5 +1,7 @@
 package pl.krakowskascenamuzyczna.ksmcalendar.data;
 
+import java.util.concurrent.atomic.AtomicMarkableReference;
+
 /**
  * Created by Bartos on 2015-08-21.
  */
