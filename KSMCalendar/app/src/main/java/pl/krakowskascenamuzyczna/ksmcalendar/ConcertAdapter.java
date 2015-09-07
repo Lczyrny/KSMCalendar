@@ -7,8 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,13 +28,23 @@ public class ConcertAdapter extends RecyclerView.Adapter<ConcertAdapter.MyViewHo
 
     private LayoutInflater inflater;
     private Context context;
+    private ImageLoader mImageLoader;
+    private MySingleton mySingleton;
 
-    List<Concert> data = Collections.emptyList();
+    private ArrayList<Concert> concertList = new ArrayList();
+   // List<Concert> concertList = Collections.emptyList();
 
-    public ConcertAdapter(Context context, List<Concert> concertList) {
+    public ConcertAdapter(Context context, List<Concert> concerts) {
         inflater = LayoutInflater.from(context);
-        this.data = concertList;
-        this.context = context;
+       // this.concertList = concertList;
+        //this.concertList = context;
+        mySingleton = MySingleton.getInstance(context);
+        mImageLoader = mySingleton.getImageLoader();
+
+    }
+    public void setListConcert(ArrayList<Concert> concertList) {
+        this.concertList=concertList;
+        notifyItemRangeChanged(0,concertList.size());
     }
 
 
@@ -40,30 +54,44 @@ public class ConcertAdapter extends RecyclerView.Adapter<ConcertAdapter.MyViewHo
             View view = inflater.inflate(R.layout.concert_item, parent, false);
             MyViewHolder holder = new MyViewHolder(view);
 
+
             return holder;
         }
 
         @Override
-        public void onBindViewHolder (MyViewHolder holder,int position){
+        public void onBindViewHolder (final MyViewHolder holder,int position){
 
-        Concert current = data.get(position);
-        holder.concert.setImageURI(Uri.parse(current.getUrl()));
+        Concert current = concertList.get(position);
+        //holder.url.setImageUrl(current.getUrl(),mImageLoader);
+        String url = current.getUrl();
+            if(url != null) {
+                mImageLoader.get(url, new ImageLoader.ImageListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
 
+                    }
+
+                    @Override
+                    public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
+                        holder.url.setImageBitmap(imageContainer.getBitmap());
+                    }
+                });
+            }
     }
 
 
 
         @Override
         public int getItemCount () {
-            return 0;
+            return concertList.size();
         }
         class MyViewHolder extends RecyclerView.ViewHolder {
 
-            private NetworkImageView concert;
+            private NetworkImageView url;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
-                concert = (NetworkImageView) itemView.findViewById(R.id.concerts_niv);
+                url = (NetworkImageView) itemView.findViewById(R.id.concerts_niv);
             }
         }
 
