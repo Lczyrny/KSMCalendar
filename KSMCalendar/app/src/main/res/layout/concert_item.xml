@@ -7,9 +7,31 @@
         android:id="@+id/concerts_niv"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:scaleType="centerCrop"
+        android:onClick="displayConcert"
         />
+    <ImageButton
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/date_ib"
+        android:layout_marginBottom="149dp"
+        android:scaleType="fitXY"
+
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageButton
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/fav_btn"
+        android:layout_marginBottom="76dp"
+        android:scaleType="fitXY"
+        android:layout_above="@+id/date_ib"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
 
 </RelativeLayout>

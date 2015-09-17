@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 
@@ -14,10 +15,22 @@ import pl.krakowskascenamuzyczna.ksmcalendar.R;
 
 public class DisplayConcertActivity extends Activity {
 
+    private TextView content;
+    private ImageView image;
+
+    int currentPosition;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_concert);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            currentPosition = extras.getInt("position");
+        }
+
+        content = (TextView) findViewById(R.id.content_tv);
+        image = (ImageView) findViewById(R.id.image_iv);
 
     }
 

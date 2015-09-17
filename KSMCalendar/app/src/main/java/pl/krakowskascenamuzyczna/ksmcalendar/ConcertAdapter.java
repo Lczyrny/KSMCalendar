@@ -1,7 +1,9 @@
 package pl.krakowskascenamuzyczna.ksmcalendar;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import pl.krakowskascenamuzyczna.ksmcalendar.Activities.CalendarActivity;
+import pl.krakowskascenamuzyczna.ksmcalendar.Activities.DisplayConcertActivity;
 import pl.krakowskascenamuzyczna.ksmcalendar.data.Concert;
 import pl.krakowskascenamuzyczna.ksmcalendar.data.Thumbnail;
 
@@ -28,18 +32,20 @@ public class ConcertAdapter extends RecyclerView.Adapter<ConcertAdapter.MyViewHo
 
     private LayoutInflater inflater;
     private Context context;
-    private ImageLoader mImageLoader;
+
+    NetworkImageView mNetworkImageView;
+
     private MySingleton mySingleton;
 
-    private ArrayList<Concert> concertList = new ArrayList();
+    private List<Concert> concertList = new ArrayList();
    // List<Concert> concertList = Collections.emptyList();
 
     public ConcertAdapter(Context context, List<Concert> concerts) {
-        inflater = LayoutInflater.from(context);
+        this.inflater = LayoutInflater.from(context);
        // this.concertList = concertList;
         //this.concertList = context;
-        mySingleton = MySingleton.getInstance(context);
-        mImageLoader = mySingleton.getImageLoader();
+        this.concertList = concerts;
+        this.context=context;
 
     }
     public void setListConcert(ArrayList<Concert> concertList) {
@@ -61,22 +67,15 @@ public class ConcertAdapter extends RecyclerView.Adapter<ConcertAdapter.MyViewHo
         @Override
         public void onBindViewHolder (final MyViewHolder holder,int position){
 
+            final float screenWidthPx = holder.itemView.getResources().getDisplayMetrics().widthPixels;
+
+
         Concert current = concertList.get(position);
-        //holder.url.setImageUrl(current.getUrl(),mImageLoader);
-        String url = current.getUrl();
-            if(url != null) {
-                mImageLoader.get(url, new ImageLoader.ImageListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
+            Log.d("mLog",current.getUrl());
+            holder.image.setImageUrl(current.getUrl(), MySingleton.getInstance().getImageLoader());
+            holder.image.getLayoutParams().height = (int) (screenWidthPx * 0.75);
 
-                    }
 
-                    @Override
-                    public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
-                        holder.url.setImageBitmap(imageContainer.getBitmap());
-                    }
-                });
-            }
     }
 
 
@@ -85,15 +84,33 @@ public class ConcertAdapter extends RecyclerView.Adapter<ConcertAdapter.MyViewHo
         public int getItemCount () {
             return concertList.size();
         }
-        class MyViewHolder extends RecyclerView.ViewHolder {
 
-            private NetworkImageView url;
+    public void  showDisplay(int position){
+        Intent intent = new Intent(context, DisplayConcertActivity.class);
+        intent.putExtra("position", position);
+        intent.putExtra("content", concertList.get(position).getContent());
+        intent.putExtra("title" , concertList.get(position).getTitle());
+        intent.putExtra("date", concertList.get(position).getDate());
+        intent.putExtra("thumbnail", concertList.get(position).getUrl());
 
+       // intent.ParcelableArrayListExtra("list", concertList);
+        context.startActivity(intent);
+    }
+
+
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
+
+            private NetworkImageView image;
             public MyViewHolder(View itemView) {
                 super(itemView);
-                url = (NetworkImageView) itemView.findViewById(R.id.concerts_niv);
+                image = (NetworkImageView) itemView.findViewById(R.id.concerts_niv);
+                image.setOnClickListener(this);
             }
-        }
+                    @Override
+                    public void onClick(View v) {showDisplay(getAdapterPosition());
 
-    }
+                    }
+                }
+            }
+
 

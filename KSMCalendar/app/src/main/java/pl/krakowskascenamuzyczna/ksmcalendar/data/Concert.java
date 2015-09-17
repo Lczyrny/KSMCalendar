@@ -29,6 +29,10 @@ public class Concert {
     private String commentStatus;
     private Category category;
 
+    public Concert(String url) {
+        this.url = url;
+    }
+
     /**
      * @return The id
      */

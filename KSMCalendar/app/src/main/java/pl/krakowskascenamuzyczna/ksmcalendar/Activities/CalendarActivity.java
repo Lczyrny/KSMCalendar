@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,9 +16,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import pl.krakowskascenamuzyczna.ksmcalendar.ApiClient;
@@ -32,7 +42,7 @@ import retrofit.client.Response;
 
 public class CalendarActivity extends Activity implements AdapterView.OnItemClickListener {
 
-    private List<Concert> concertList;
+    private List<Concert> concertList = new ArrayList<>();
     private RecyclerView recyclerView;
     private ConcertAdapter adapter;
 
@@ -40,7 +50,8 @@ public class CalendarActivity extends Activity implements AdapterView.OnItemClic
 
 
 
-    ImageLoader mImageLoader;
+
+
     NetworkImageView mNetworkImageView;
     //MyArrayAdapter imageArrayAdapter;
 
@@ -51,20 +62,17 @@ public class CalendarActivity extends Activity implements AdapterView.OnItemClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
 
-
-        mImageLoader = MySingleton.getInstance(this).getImageLoader();
-        adapter = new ConcertAdapter(this, concertList);
-        recyclerView.setAdapter(adapter);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
-
-
-
+        futureConcerts();
           }
 
-        public void futureConcerts() {
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
+    }
+
+   /* public void futureConcerts() {
         ApiClient.getKsmApiClient().getFuture("type", "url", "title", "content", "date", new Callback<List<Concert>>() {
             @Override
             public void success(List<Concert> concerts, Response response) {
@@ -79,13 +87,50 @@ public class CalendarActivity extends Activity implements AdapterView.OnItemClic
                 setConcerts(null);
             }
         });
+    }*/
+    public void futureConcerts() {
+        StringRequest request = new StringRequest(Request.Method.GET, "http://krakowskascenamuzyczna.pl/api/koncerty/future/",
+                new com.android.volley.Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject responseJSONObject = new JSONObject(response);
+                            String arrayString = responseJSONObject.getJSONArray("posts").toString();
+                            JSONArray responseJSONArray = new JSONArray(arrayString);
+                            Concert tempConcert;
+                            for(int i = 0 ;  i <responseJSONArray.length(); i++){
+                                tempConcert = new Concert(responseJSONArray.getJSONObject(i).getJSONArray("attachments").getJSONObject(0).getJSONObject("images").getJSONObject("full").getString("url"));
+                                concertList.add(tempConcert);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("mLog", getClass().getName() + ": "+ String.valueOf(concertList.size()));
+                        adapter = new ConcertAdapter(CalendarActivity.this, concertList);
+                        recyclerView = (RecyclerView) findViewById(R.id.concerts_rv);
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    }
+                },
+                new com.android.volley.Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        Log.d("mLog", "[LoginActivity] ProcessLogin.Volley error: " + error.getMessage());
+                        VolleyLog.d("mLog", "[LoginActivity] ProcessLogin.Error: " + error.getMessage());
+                    }
+                }
+        );
+        MySingleton.getInstance().getRequestQueue().add(request);
     }
 
     public void setConcerts(List<Concert> concerts) {
-       adapter = new ConcertAdapter(this,concerts);
-       recyclerView.setAdapter(adapter);
-       recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter.notifyDataSetChanged();
+
+        adapter = new ConcertAdapter(CalendarActivity.this, concertList);
+        recyclerView = (RecyclerView) findViewById(R.id.concerts_rv);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
     }
@@ -120,6 +165,7 @@ public class CalendarActivity extends Activity implements AdapterView.OnItemClic
         startActivity(intent);
 
     }
+
 
 
 }

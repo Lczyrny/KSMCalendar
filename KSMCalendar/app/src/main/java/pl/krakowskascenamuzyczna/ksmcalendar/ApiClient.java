@@ -38,8 +38,8 @@ public class ApiClient {
     }
     public interface KsmInterface {
         @GET("/koncerty/future")
-                void getFuture(@Query("Typ")String type, @Query("Link")String url,
-                               @Query("Tytuł")String title,@Query("Opis")String content,@Query("Data")String date,
+                void getFuture(@Query("type")String type, @Query("url")String url,
+                               @Query("title")String title,@Query("content")String content,@Query("date")String date,
                                Callback<List<Concert>> callback);
     }
 }
