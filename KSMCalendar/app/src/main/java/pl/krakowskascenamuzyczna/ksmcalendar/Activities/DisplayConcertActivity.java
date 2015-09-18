@@ -3,34 +3,49 @@ package pl.krakowskascenamuzyczna.ksmcalendar.Activities;
 import android.app.Activity;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
+import com.squareup.picasso.Picasso;
 
 import pl.krakowskascenamuzyczna.ksmcalendar.MySingleton;
 import pl.krakowskascenamuzyczna.ksmcalendar.R;
 
 public class DisplayConcertActivity extends Activity {
 
-    private TextView content;
+    private TextView contentConcert;
     private ImageView image;
 
-    int currentPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_concert);
+        contentConcert = (TextView) findViewById(R.id.content_tv);
+        image = (ImageView) findViewById(R.id.image_iv);
         Bundle extras = getIntent().getExtras();
+        int currentPosition;
+        String content;
+        String url;
         if (extras != null) {
             currentPosition = extras.getInt("position");
+            content = extras.getString("content");
+            url = extras.getString("url");
+            if (content != null) {
+                contentConcert.setText(content);
+                contentConcert.setText(Html.fromHtml(content));
+            }
+            if (url !=null) {
+                Picasso.with(this).load(url)
+                .into(image);
+            }
         }
 
-        content = (TextView) findViewById(R.id.content_tv);
-        image = (ImageView) findViewById(R.id.image_iv);
+
 
     }
 

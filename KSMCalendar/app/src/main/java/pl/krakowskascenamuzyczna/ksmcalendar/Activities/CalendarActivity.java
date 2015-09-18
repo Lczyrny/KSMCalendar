@@ -100,7 +100,8 @@ public class CalendarActivity extends Activity implements AdapterView.OnItemClic
                             JSONArray responseJSONArray = new JSONArray(arrayString);
                             Concert tempConcert;
                             for(int i = 0 ;  i <responseJSONArray.length(); i++){
-                                tempConcert = new Concert(responseJSONArray.getJSONObject(i).getJSONArray("attachments").getJSONObject(0).getJSONObject("images").getJSONObject("full").getString("url"));
+                                tempConcert = new Concert(responseJSONArray.getJSONObject(i).getJSONArray("attachments").getJSONObject(0).getJSONObject("images").getJSONObject("full").getString("url"),
+                                        responseJSONArray.getJSONObject(i).getString("content"));
                                 concertList.add(tempConcert);
                             }
                         } catch (JSONException e) {

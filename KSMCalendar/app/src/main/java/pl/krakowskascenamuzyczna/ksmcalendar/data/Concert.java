@@ -29,8 +29,9 @@ public class Concert {
     private String commentStatus;
     private Category category;
 
-    public Concert(String url) {
+    public Concert(String url, String content) {
         this.url = url;
+        this.content=content;
     }
 
     /**

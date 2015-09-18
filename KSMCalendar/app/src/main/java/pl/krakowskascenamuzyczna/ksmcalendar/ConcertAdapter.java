@@ -89,9 +89,9 @@ public class ConcertAdapter extends RecyclerView.Adapter<ConcertAdapter.MyViewHo
         Intent intent = new Intent(context, DisplayConcertActivity.class);
         intent.putExtra("position", position);
         intent.putExtra("content", concertList.get(position).getContent());
-        intent.putExtra("title" , concertList.get(position).getTitle());
-        intent.putExtra("date", concertList.get(position).getDate());
-        intent.putExtra("thumbnail", concertList.get(position).getUrl());
+       // intent.putExtra("title" , concertList.get(position).getTitle());
+        //intent.putExtra("date", concertList.get(position).getDate());
+        intent.putExtra("url", concertList.get(position).getUrl());
 
        // intent.ParcelableArrayListExtra("list", concertList);
         context.startActivity(intent);
