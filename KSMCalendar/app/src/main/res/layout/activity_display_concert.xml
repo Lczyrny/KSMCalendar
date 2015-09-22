@@ -17,8 +17,17 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/content_tv"
+        android:id="@+id/date_tv"
         android:layout_below="@+id/image_iv"
         android:textColor="#ffffff"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/content_tv"
+        android:layout_below="@+id/date_tv"
+        android:textColor="#ffffff"
+        android:maxLines = "20"
+        android:scrollbars = "vertical"
         />
 </RelativeLayout>
