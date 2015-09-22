@@ -84,7 +84,7 @@ public class ConcertAdapter extends RecyclerView.Adapter<ConcertAdapter.MyViewHo
         Log.d("mLog", current.getUrl());
         holder.image.setImageUrl(current.getUrl(), MySingleton.getInstance().getImageLoader());
         holder.image.getLayoutParams().height = (int) (screenWidthPx * 0.75);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date concertDate = new Date();
         try {
             concertDate = format.parse(current.getDate());

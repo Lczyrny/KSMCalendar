@@ -26,11 +26,15 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import pl.krakowskascenamuzyczna.ksmcalendar.ApiClient;
@@ -53,6 +57,10 @@ public class CalendarActivity extends Activity implements AdapterView.OnItemClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar todayDate = Calendar.getInstance();
+        String strDate = format.format(todayDate.getTime());
+        Toast.makeText(getApplicationContext(), "Time: " + strDate, Toast.LENGTH_LONG).show();
 
         futureConcerts();
 
