@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.util.Date;
 import org.joda.time.DateTime;
@@ -19,6 +20,8 @@ import org.joda.time.Days;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.txusballesteros.bubbles.BubbleLayout;
+import com.txusballesteros.bubbles.BubblesManager;
 
 import java.net.URL;
 import java.text.ParseException;
@@ -42,7 +45,7 @@ public class ConcertAdapter extends RecyclerView.Adapter<ConcertAdapter.MyViewHo
 
     private LayoutInflater inflater;
     private Context context;
-
+    private TextView concertBubble;
     NetworkImageView mNetworkImageView;
 
     private MySingleton mySingleton;
@@ -70,7 +73,6 @@ public class ConcertAdapter extends RecyclerView.Adapter<ConcertAdapter.MyViewHo
         View view = inflater.inflate(R.layout.concert_item, parent, false);
         MyViewHolder holder = new MyViewHolder(view);
 
-
         return holder;
     }
 
@@ -79,11 +81,11 @@ public class ConcertAdapter extends RecyclerView.Adapter<ConcertAdapter.MyViewHo
 
         final float screenWidthPx = holder.itemView.getResources().getDisplayMetrics().widthPixels;
 
-
         Concert current = concertList.get(position);
         Log.d("mLog", current.getUrl());
         holder.image.setImageUrl(current.getUrl(), MySingleton.getInstance().getImageLoader());
         holder.image.getLayoutParams().height = (int) (screenWidthPx * 0.75);
+
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date concertDate = new Date();
         try {
@@ -96,22 +98,8 @@ public class ConcertAdapter extends RecyclerView.Adapter<ConcertAdapter.MyViewHo
         int days = Days.daysBetween(new DateTime(currentDate), new DateTime(concertDate)).getDays();
         holder.date_btn.setText(String.valueOf(days));
 
+
     }
-
-    public static long daysBetween(Calendar currentCalendar, Calendar c) {
-
-        Calendar date = (Calendar)currentCalendar.clone();
-        long daysBetween = 0;
-        while (date.before(c)) {
-            date.add(Calendar.DAY_OF_MONTH, 1);
-            daysBetween++;
-        }
-        return daysBetween;
-    }
-
-
-
-
 
 
         @Override

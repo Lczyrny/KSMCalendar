@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -25,6 +26,8 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
+import com.txusballesteros.bubbles.BubbleLayout;
+import com.txusballesteros.bubbles.BubblesManager;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -52,20 +55,26 @@ public class CalendarActivity extends Activity implements AdapterView.OnItemClic
     private List<Concert> concertList = new ArrayList<>();
     private RecyclerView recyclerView;
     private ConcertAdapter adapter;
+    private TextView concertBubble;
+    private BubblesManager bubblesManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Calendar todayDate = Calendar.getInstance();
-        String strDate = format.format(todayDate.getTime());
-        Toast.makeText(getApplicationContext(), "Time: " + strDate, Toast.LENGTH_LONG).show();
-
         futureConcerts();
 
 
-          }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        bubblesManager.recycle();
+
+    }
+
 
     @Override
     protected void onStart() {
@@ -144,7 +153,23 @@ public class CalendarActivity extends Activity implements AdapterView.OnItemClic
         startActivity(intent);
 
     }
+    public void Bubble(View view) {
+        concertBubble = (TextView) findViewById(R.id.bubble_tv);
 
 
+        bubblesManager = new BubblesManager.Builder(this)
+                .build();
+        bubblesManager.initialize();
+
+        bubblesManager = new BubblesManager.Builder(this)
+                .setTrashLayout(R.layout.trash_bubble)
+                .build();
+        bubblesManager.initialize();
+
+        BubbleLayout bubbleView = (BubbleLayout)LayoutInflater
+                .from(CalendarActivity.this).inflate(R.layout.concert_bubble, null);
+        bubblesManager.addBubble(bubbleView, 60, 20);
+
+    }
 
 }

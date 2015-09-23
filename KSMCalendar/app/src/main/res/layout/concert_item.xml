@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:onClick="displayConcert"
+
         />
     <Button
         android:layout_width="75dp"
@@ -18,11 +19,14 @@
         android:id="@+id/date_btn"
         android:layout_marginBottom="149dp"
         android:scaleType="fitXY"
-        android:background="#99000000"
+        android:background="#29000000"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textColor="#ffffff"
+        android:textColor="#D8D8D8"
+        android:textSize="50dp"
+        android:textStyle="italic"
+        android:typeface = "monospace"
         />
 
     <Button
@@ -34,7 +38,8 @@
         android:layout_above="@+id/date_btn"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="106dp" />
+        android:layout_marginBottom="106dp"
+        android:onClick="Bubble"/>
 
 
 </RelativeLayout>
