@@ -4,6 +4,7 @@ package pl.krakowskascenamuzyczna.ksmcalendar.Activities;
 import android.app.Activity;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,42 +13,30 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
 import com.txusballesteros.bubbles.BubbleLayout;
 import com.txusballesteros.bubbles.BubblesManager;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
-import pl.krakowskascenamuzyczna.ksmcalendar.ApiClient;
-import pl.krakowskascenamuzyczna.ksmcalendar.ConcertAdapter;
+
+import pl.krakowskascenamuzyczna.ksmcalendar.Adapter.BubbleAdapter;
+import pl.krakowskascenamuzyczna.ksmcalendar.Adapter.ConcertAdapter;
 import pl.krakowskascenamuzyczna.ksmcalendar.MySingleton;
 import pl.krakowskascenamuzyczna.ksmcalendar.R;
 import pl.krakowskascenamuzyczna.ksmcalendar.data.Concert;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 
 public class CalendarActivity extends Activity implements AdapterView.OnItemClickListener {
@@ -55,31 +44,50 @@ public class CalendarActivity extends Activity implements AdapterView.OnItemClic
     private List<Concert> concertList = new ArrayList<>();
     private RecyclerView recyclerView;
     private ConcertAdapter adapter;
-    private TextView concertBubble;
+
+
     private BubblesManager bubblesManager;
 
+    private TextView mBubbleTextView;
+    private BubbleLayout bubbleView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+
+        bubblesManager = new BubblesManager.Builder(this)
+                .build();
+        bubblesManager.initialize();
+
+        bubblesManager = new BubblesManager.Builder(this)
+                .setTrashLayout(R.layout.trash_bubble)
+                .build();
+        bubblesManager.initialize();
+        bubbleView = (BubbleLayout)LayoutInflater
+                .from(CalendarActivity.this).inflate(R.layout.bubble_concert, null);
+        mBubbleTextView = (TextView) bubbleView.findViewById(R.id.bubble_tv);
         futureConcerts();
 
 
     }
+    public void setBubbleText(String text){
+        bubblesManager.addBubble(bubbleView, 60, 20);
+        mBubbleTextView.setText(text);
 
-    @Override
+    }
+
+   /* @Override
     protected void onDestroy() {
         super.onDestroy();
         bubblesManager.recycle();
 
-    }
+    }*/
 
 
     @Override
     protected void onStart() {
         super.onStart();
-
 
     }
 
@@ -108,6 +116,11 @@ public class CalendarActivity extends Activity implements AdapterView.OnItemClic
                         recyclerView = (RecyclerView) findViewById(R.id.concerts_rv);
                         recyclerView.setAdapter(adapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+
+
+
+
                     }
                 },
                 new com.android.volley.Response.ErrorListener() {
@@ -151,24 +164,6 @@ public class CalendarActivity extends Activity implements AdapterView.OnItemClic
         Intent intent = new Intent(CalendarActivity.this , DisplayConcertActivity.class);
         intent.putExtra("position", position);
         startActivity(intent);
-
-    }
-    public void Bubble(View view) {
-        concertBubble = (TextView) findViewById(R.id.bubble_tv);
-
-
-        bubblesManager = new BubblesManager.Builder(this)
-                .build();
-        bubblesManager.initialize();
-
-        bubblesManager = new BubblesManager.Builder(this)
-                .setTrashLayout(R.layout.trash_bubble)
-                .build();
-        bubblesManager.initialize();
-
-        BubbleLayout bubbleView = (BubbleLayout)LayoutInflater
-                .from(CalendarActivity.this).inflate(R.layout.concert_bubble, null);
-        bubblesManager.addBubble(bubbleView, 60, 20);
 
     }
 
