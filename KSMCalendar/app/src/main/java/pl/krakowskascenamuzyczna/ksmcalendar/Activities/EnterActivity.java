@@ -29,9 +29,11 @@ public class EnterActivity extends Activity implements SurfaceHolder.Callback {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter);
+        mp = new MediaPlayer();
         mp = MediaPlayer.create(this, R.raw.video);
         mSurfaceView = (SurfaceView) findViewById(R.id.video_surface);
-
+        SurfaceHolder holder = mSurfaceView.getHolder();
+        holder.addCallback(this);
     }
 
     @Override
@@ -57,10 +59,8 @@ public class EnterActivity extends Activity implements SurfaceHolder.Callback {
 
         //Commit the layout parameters
         mSurfaceView.setLayoutParams(lp);
-
-        //Start video
+        mp.setDisplay(mSurfaceView.getHolder());
         mp.start();
-
     }
 
     @Override
